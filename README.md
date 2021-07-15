@@ -1,0 +1,1 @@
+This is a bot to help manage interactions between the in-game world of rust and the in-world game of Discord. Yay
