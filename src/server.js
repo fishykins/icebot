@@ -67,7 +67,7 @@ class Server {
             var txt = "";
             this.devices.forEach((e, i) => {
                 const numb = i + 1;
-                txt += "\n" + numb + ") " + e.name + " - " + e.id;
+                txt += "\n" + numb + ") " + e.name + " - " + e.id; // :white_check_mark:
             });
             this.logger.sendBlock(txt, "Devices");
         } else if (args[0] == "save") {
@@ -103,6 +103,54 @@ class Server {
             if (!removed) {
                 this.logger.error("Could not remove device '" + args[1] + "'- no such device!");
             }
+        } else {
+            // Handle device calls
+            for (let i = 0; i < this.devices.length; i++) {
+                const device = this.devices[i];
+                if (args[0] == device.name) {
+                    i = this.devices.length + 1;
+                    this.logger.log("handling device '" + device.name + "'");
+                    // Handle the device
+                    this.rust.getEntityInfo(device.id, (amessage) => {
+                        if (amessage.response.hasOwnProperty('error')) {
+                            channel.send("Error: I can't find the group named '" + device.name + "'- maybe the switch has been removed or some twat has cleared tc?");
+                            return;
+                        }
+                        let switchState = amessage.response.entityInfo.payload.value;
+                        switch (args[1]) {
+                            case "off":
+                                if (switchState) {
+                                    this.rust.turnSmartSwitchOff(device.id, (_) => {
+                                        this.logger.send(device.name + " is now **off**");
+                                        return true;
+                                    })
+                                } else {
+                                    this.logger.send(device.name + " is already off!");
+                                }
+                                break;
+                            case "on":
+                                if (!switchState) {
+                                    this.rust.turnSmartSwitchOn(device.id, (_) => {
+                                        this.logger.send(device.name + " is now **on**");
+                                        return true;
+                                    })
+                                } else {
+                                    this.logger.send(device.name + " is already on!");
+                                }
+                                break;
+                            default:
+                                var txt = device.name + " is currently ";
+                                if (switchState) {
+                                    txt = txt + "**on**";
+                                } else {
+                                    txt = txt + "**off**";
+                                }
+                                this.logger.send(txt);
+                                break;
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -132,7 +180,7 @@ class Server {
             this.disconnect(() => {
                 this.rust.destroy();
                 this.logger = null;
-                
+
             });
         }
     }

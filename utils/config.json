@@ -1,0 +1,21 @@
+{
+  "fcm_credentials": {
+    "keys": {
+      "privateKey": "c3FPhXmoU1WpH4a6kJrxN-h0EJLKw3xPQm946jbhKNo",
+      "publicKey": "BLRP5oQ0-CLvjcGZrgpTRaOskiA_vC7mZ18zk7op6UT92kV30XV_PyQpKYKofxAv0qtZYQky5Gsv_X2uoutziSg",
+      "authSecret": "09Bf5vqRXupiuXb1Pg3O0g"
+    },
+    "fcm": {
+      "token": "eB-NXCofUTk:APA91bEW6xL6ttWGY3eqYCVbJC5MrwW9SsBCxgaCyg3AVHH2gGOE4JDjFsiefX0nhWy4y3akFc5wIwq4f3tvkJIA3BdayleLobIWYaadU3XWXrBTT36xGqYIXB8qtxdK7lNgMC6m6oyn",
+      "pushSet": "d17gPUAR1lU:APA91bEg7-MshzhbwqcB4gq2sGPw-TeC6Zu1hr8GzvJ-5atTTz9iDlybRgjNGiVJM1jfiqJrRYmtJug3D2rFUGfIzYJShVyXcjTDACa-HXAeHQkxpIFcoFw-dfYcK5eQXPMwqXjhmBI6"
+    },
+    "gcm": {
+      "token": "fueuPsxRKtw:APA91bHGMpVVsM5srvTpCQoNjN9He0sQSCvUMrO2dtrxmFOU2b-KdUMhS-e67fhaR4epOaHRMGzBjg8aXLsmFVifrGHMak0JHPPQ1rYG-m6dQdWbGxNO2Pw635BDo0E_oRqP0-V9atAc",
+      "androidId": "4902914524976712893",
+      "securityToken": "1512936072486735623",
+      "appId": "wp:receiver.push.com#62cef32b-f88f-43cb-a0b3-9b4861e57f81"
+    }
+  },
+  "expo_push_token": "ExponentPushToken[y1QJ1_Chk6dim5vgVG6eUu]",
+  "rustplus_auth_token": "eyJzdGVhbUlkIjoiNzY1NjExOTgwMDY5MzIwMjIiLCJpc3MiOjE2MjU5NTY2NjYsImV4cCI6MTYyNzE2NjI2Nn0=.QjBhs3YUoj1A6ZUZwDh7pgpJ/WfizwmoIYm5lqIk2/LphynTFYpRFV3dX/VRWMEIuJU2IRd0LmSWYubFtOtcBg=="
+}

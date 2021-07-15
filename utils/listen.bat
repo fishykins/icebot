@@ -1,1 +1,1 @@
-npx @liamcottle/rustplus.js fcm-listen
+npx @liamcottle/rustplus.js --config-file=config.json fcm-listen

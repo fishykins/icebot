@@ -1,1 +1,1 @@
-npx @liamcottle/rustplus.js --config-file=/path/to/config.json fcm-register
+npx @liamcottle/rustplus.js --config-file=config.json fcm-register

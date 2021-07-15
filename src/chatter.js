@@ -24,7 +24,7 @@ class Chatter {
     }
 
     talkBack(message) {
-        if (check(message, ["why", "y "])) {
+        if (check(message, [" why", " y "])) {
             this.why(message);
         } else if (check(message, ["can you ", "can u ", "do you ", "do u ", "are you", "are u"])) {
             this.canYou(message);
