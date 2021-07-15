@@ -1,5 +1,5 @@
 class Snooper {
-    constructor(logger) {
+    constructor() {
         this.channels = [];
     }
 

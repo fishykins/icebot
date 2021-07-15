@@ -28,8 +28,6 @@ class IceBot {
         this.initDiscord();
     }
 
-
-
     initDiscord() {
         this.client = new Client(DiscordConfig.botToken, DiscordConfig.channelId, DiscordConfig.preffix, this.logger);
         this.client.connect(this.clientReady.bind(this), this.apiCall.bind(this), this.touchMessage.bind(this));
