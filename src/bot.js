@@ -3,6 +3,7 @@ const Logger = require("./logger.js").Logger;
 const Player = require("./player.js").Player;
 const Server = require("./server.js").Server;
 const Client = require("./client.js").Client;
+const Chatter = require("./chatter.js").Chatter;
 const CLI = require("./cli.js");
 
 // Configs
@@ -21,10 +22,12 @@ class IceBot {
     constructor() {
         this.client = null;
         this.server = null;
+        this.chatter = null;
         this.logger = new Logger();
     }
 
     init() {
+        this.chatter = new Chatter(this.logger, ["tony", "trevor", "bot", "you", "u "]);
         this.initDiscord();
     }
 
@@ -71,7 +74,7 @@ class IceBot {
 
     // Takes in all messages that are not api calls. Good for snooping...
     touchMessage(message) {
-        this.logger.log(message);
+        this.chatter.chat(message);
     }
 }
 
