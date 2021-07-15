@@ -2,7 +2,7 @@ var methods = [{
         "name": "help",
         "description": "Lists all possible commands",
         "function": help,
-        "spellings": ["hlp", "hep", "info", "ifno"]
+        "spellings": ["hlp", "hep", "h", "-h"]
     },
     {
         "name": "device",
@@ -48,6 +48,12 @@ var methods = [{
         "function": quit,
         "spellings": ["exit", "kill", "stop"],
         "hidden": true
+    },
+    {
+        "name": "about",
+        "description": "Development and useful links",
+        "function": git,
+        "spellings": ["info", "github", "git", "development"]
     }
 ]
 
@@ -110,6 +116,10 @@ function quit(client, server, logger, _) {
     //await new Promise(r => setTimeout(r, 2000));
     server.destroy();
     client.destroy();
+}
+
+function git(_, _, logger, _) {
+    logger.send("This project was developed by Fishy#3400 for use by ICE. \nhttps://github1s.com/fishykins/icebot");
 }
 
 module.exports = {
