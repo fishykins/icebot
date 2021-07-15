@@ -8,14 +8,14 @@ const fs = require('fs');
 // ==================================================================================================== //
 // Main class
 class Server {
-    constructor(ip, port, player, logger) {
+    constructor(ip, port, player, logger, autoConnect) {
         this.ip = ip;
         this.port = port;
         this.player = player;
         this.logger = logger;
         this.connected = false;
         this.rust = new RustPlus(this.ip, this.port, this.player.id, this.player.token);
-        this.autoReconnect = true;
+        this.autoReconnect = autoConnect;
         this.onConnect = null;
         this.onDisconnect = null;
         this.devices = [];

@@ -37,7 +37,7 @@ class IceBot {
     }
 
     initRust() {
-        this.server = new Server(ServerConfig.ip, ServerConfig.port, hostPlayer, this.logger);
+        this.server = new Server(ServerConfig.ip, ServerConfig.port, hostPlayer, this.logger, ServerConfig.autoconnect);
         this.server.connect(this.serverReady.bind(this));
         this.logger.send("starting server (rust+) connection...");
     }
