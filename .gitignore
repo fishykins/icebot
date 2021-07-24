@@ -1,5 +1,6 @@
 # configs
 config/
+utils/config.json
 
 # Logs
 logs
