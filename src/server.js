@@ -1,35 +1,20 @@
-const Discord = require("discord.js");
 const RustPlus = require('@liamcottle/rustplus.js');
-const deviceConfigFile = "./config/devices.json";
-const fs = require('fs');
+const fs = require("fs");
 
 
 // ==================================================================================================== //
 // ==================================================================================================== //
 // Main class
 class Server {
-    constructor(ip, port, player, logger, autoConnect) {
-        this.ip = ip;
-        this.port = port;
-        this.player = player;
-        this.logger = logger;
+    constructor(config, bot) {
+        this.bot = bot;
+        this.config = config;
+        this.rust = new RustPlus(config.ip, config.port, config.playerToken.steamid, config.playerToken.token);
+        this.logger = bot.logger;
         this.connected = false;
-        this.rust = new RustPlus(this.ip, this.port, this.player.id, this.player.token);
-        this.autoReconnect = autoConnect;
+        this.autoConnect = config.autoConnect;
         this.onConnect = null;
         this.onDisconnect = null;
-        this.devices = [];
-
-        jsonReader(deviceConfigFile, (err, devices) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-            this.devices = devices;
-        });
-
-        this.logger.send("found " + this.devices + " device configs");
-        this.logger.send("server config established- using " + player.name + " as host");
 
         this.rust.on('connected', () => {
             this.connected = true;
@@ -40,12 +25,12 @@ class Server {
         });
 
         this.rust.on('message', (message) => {
-            this.logger.log("received message from server: " + message[0]);
+            this.logger.log("received message from server: " + JSON.stringify(message));
         });
 
         this.rust.on('error', (message) => {
             this.logger.error("received error from server: " + message.error);
-            if (this.autoReconnect) {
+            if (this.autoConnect) {
                 this.connect()
             }
         });
@@ -56,102 +41,72 @@ class Server {
             if (this.onDisconnect) {
                 this.onDisconnect();
             }
-            if (this.autoReconnect) {
+            if (this.autoConnect) {
                 this.connect(null);
             }
         });
     }
 
-    handleDevices(args) {
-        if (args.length == 0 || args[0] == "list") {
-            var txt = "";
-            this.devices.forEach((e, i) => {
-                const numb = i + 1;
-                txt += "\n" + numb + ") " + e.name + " - " + e.id; // :white_check_mark:
-            });
-            this.logger.sendBlock(txt, "Devices");
-        } else if (args[0] == "save") {
-            fs.writeFile(deviceConfigFile, JSON.stringify(this.devices), err => {
-                if (err) {
-                    this.logger.error("Failed to save device config to file!");
-                } else {
-                    this.logger.send("Saved device config to file!");
-                }
-            })
+    setDevice(device, targetState) {
+        this.logger.log("handling device '" + device.name + "'");
+        // Handle the device
+        this.rust.getEntityInfo(device.id, (amessage) => {
+            if (amessage.response.hasOwnProperty('error')) {
+                this.logger.eror("I can't find the group named '" + device.name + "'- maybe the switch has been removed or some twat has cleared tc?");
+                return;
+            }
+            var entity = amessage.response.entityInfo;
+            var entityType = entity.type;
+            var isOn = entity.payload.value;
 
-        } else if (args[0] == "new" || args[0] == "add") {
-            if (args.length >= 3) {
-                var newDevice = {
-                    "name": args[1],
-                    "id": args[2]
-                }
-                this.devices.push(newDevice);
-                this.logger.send("Added device '" + args[1] + "'- save device config to make permenant.");
+            if (entityType == 3) {
+                this.logger.send(device.name + " is a smart switch- you cannot turn it on/off!");
+                return;
+            }
+
+            if (targetState == isOn) {
+                const txt = (isOn) ? device.name + " is already on" : device.name + " is already off";
+                this.logger.send(txt);
+                return;
+            }
+
+            if (targetState) {
+                this.rust.turnSmartSwitchOn(device.id, (_) => {
+                    this.logger.announce(device.name + " is now ON");
+                })
             } else {
-                this.logger.error("Not enough parameters provided- I need a name and ID to do that sir!");
+                this.rust.turnSmartSwitchOff(device.id, (_) => {
+                    this.logger.announce(device.name + " is now OFF");
+                })
+            };
+        });
+    }
+
+    getDevice(device) {
+        this.rust.getEntityInfo(device.id, (amessage) => {
+            if (amessage.response.hasOwnProperty('error')) {
+                this.logger.eror("I can't find the group named '" + device.name + "'- maybe the switch has been removed or some twat has cleared tc?");
+                return;
             }
-        } else if (args[0] == "remove" && args.length >= 2) {
-            var removed = false;
-            for (let i = 0; i < this.devices.length && !removed; i++) {
-                const d = this.devices[i];
-                if (d.name == args[1] || d.id == args[1]) {
-                    this.devices.splice(i, 1);
-                    removed = true;
-                    this.logger.send("Removed '" + args[1] + "' from devices- save device config to make permenant.");
-                }
+            var entity = amessage.response.entityInfo;
+            var entityType = entity.type;
+            var value = entity.payload.value;
+            
+            if (!value && entityType == 3) {
+                // Storage monitor
+                var items = entity.payload.items;
+                this.logger.send(`Storage device ${device.name} contains ${items.length} item(s)`);
+
+                // print out the items in this storage entity
+                items.forEach((item) => {
+                    this.logger.send(item);
+                });
+                return;
+            } else {
+                const txt = (value) ? device.name + " is currently ON" : device.name + " is currently OFF";
+                this.logger.send(txt);
             }
-            if (!removed) {
-                this.logger.error("Could not remove device '" + args[1] + "'- no such device!");
-            }
-        } else {
-            // Handle device calls
-            for (let i = 0; i < this.devices.length; i++) {
-                const device = this.devices[i];
-                if (args[0] == device.name) {
-                    i = this.devices.length + 1;
-                    this.logger.log("handling device '" + device.name + "'");
-                    // Handle the device
-                    this.rust.getEntityInfo(device.id, (amessage) => {
-                        if (amessage.response.hasOwnProperty('error')) {
-                            channel.send("Error: I can't find the group named '" + device.name + "'- maybe the switch has been removed or some twat has cleared tc?");
-                            return;
-                        }
-                        let switchState = amessage.response.entityInfo.payload.value;
-                        switch (args[1]) {
-                            case "off":
-                                if (switchState) {
-                                    this.rust.turnSmartSwitchOff(device.id, (_) => {
-                                        this.logger.send(device.name + " is now **off**");
-                                        return true;
-                                    })
-                                } else {
-                                    this.logger.send(device.name + " is already off!");
-                                }
-                                break;
-                            case "on":
-                                if (!switchState) {
-                                    this.rust.turnSmartSwitchOn(device.id, (_) => {
-                                        this.logger.send(device.name + " is now **on**");
-                                        return true;
-                                    })
-                                } else {
-                                    this.logger.send(device.name + " is already on!");
-                                }
-                                break;
-                            default:
-                                var txt = device.name + " is currently ";
-                                if (switchState) {
-                                    txt = txt + "**on**";
-                                } else {
-                                    txt = txt + "**off**";
-                                }
-                                this.logger.send(txt);
-                                break;
-                        }
-                    });
-                }
-            }
-        }
+        });
     }
 
     connect(callback) {
@@ -159,7 +114,7 @@ class Server {
         if (callback) {
             this.onConnect = callback;
         }
-        this.logger.log("server Connecting on " + this.ip + ":" + this.port + " with playerId=" + this.player.id + ", token=" + this.player.token);
+        this.logger.log("server Connecting on " + this.config.ip + ":" + this.config.port + " with playerId=" + this.config.playerToken.steamid + ", token=" + this.config.playerToken.token);
     }
 
     disconnect(callback) {
@@ -236,7 +191,7 @@ function jsonReader(filePath, cb) {
     })
 }
 
-function jsonWriter(filepath, data, cb) {
+function jsonWriter(filepath, data) {
     fs.writeFile(filepath, data.toString(), err => {
         if (err) {
             console.log('Error writing file', err)

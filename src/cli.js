@@ -1,3 +1,9 @@
+const playerConfigFile = "./config/players.json";
+const PlayerConfig = require("../config/players.json");
+const SteamConfig = require("../config/steam.json");
+const Player = require("./player.js").Player;
+const fs = require('fs');
+
 var methods = [{
         "name": "help",
         "description": "Lists all possible commands",
@@ -20,12 +26,7 @@ var methods = [{
         "name": "server",
         "description": "Gets server infomation, including usefull runtime data",
         "function": serverInfo,
-        "spellings": ["srv", "serverinfo", "srver"]
-    },
-    {
-        "name": "players",
-        "description": "Gets the number of players currently active on the server",
-        "function": playerCount
+        "spellings": ["srv", "serverinfo", "srver", "rustpluss", "rustplus", "rust+"]
     },
     {
         "name": "connect",
@@ -54,72 +55,105 @@ var methods = [{
         "description": "Development and useful links",
         "function": git,
         "spellings": ["info", "github", "git", "development"]
+    },
+    {
+        "name": "players",
+        "description": "Player database management",
+        "function": player,
+        "spellings": ["playr", "plyer", "player"]
+    },
+    {
+        "name": "stats",
+        "description": "Player stats",
+        "function": stats,
+        "spellings": ["sts", "stat"]
     }
 ]
 
-function help(_, _, logger, _) {
+function help(bot, _, _) {
     var txt = "**All commands**\n";
     methods.forEach(e => {
         if (!e.hidden) {
             txt = txt + "*" + e.name + "* - " + e.description + "\n";
         }
     });
-    logger.send(txt);
+    bot.logger.send(txt);
 }
 
-function device(_, server, _, args) {
-    server.handleDevices(args);
+function player(bot, args, author) {
+    bot.handlePlayers(args, author);
 }
 
-function debug(_, _, logger, args) {
-    if (args[0] == "true") {
-        logger.debuging = true;
-        logger.send("Debugging set to **TRUE**");
-    } else if (args[0] == "false") {
-        logger.debuging = false;
-        logger.send("Debugging set to **FALSE**");
+function stats(bot, args, author) {
+    bot.stats(args, author);
+}
+
+function device(bot, args, _) {
+    bot.handleDevices(args);
+}
+
+function debug(bot, args, _) {
+    if (args[0].toLowerCase() == "true") {
+        bot.logger.debuging = true;
+        bot.logger.send("Debugging set to TRUE");
+    } else if (args[0].toLowerCase() == "false") {
+        bot.logger.debuging = false;
+        bot.logger.send("Debugging set to FALSE");
     } else {
-        logger.send("Debugging: **" + logger.debuging + "**");
+        bot.logger.send("Debugging: **" + logger.debuging + "**");
     }
 }
 
-function autoConnect(_, server, logger, args) {
-    if (args[0] == "true") {
-        server.autoReconnect = true;
-        logger.send("autoConnect set to **TRUE**");
-    } else if (args[0] == "false") {
-        server.autoReconnect = false;
-        logger.send("autoConnect set to **FALSE**");
+function autoConnect(bot, args, _) {
+    if (args[0].toLowerCase() == "true") {
+        bot.server.autoReconnect = true;
+        bot.logger.send("autoConnect set to **TRUE**");
+    } else if (args[0].toLowerCase() == "false") {
+        bot.server.autoReconnect = false;
+        bot.logger.send("autoConnect set to **FALSE**");
     } else {
-        logger.send("autoConnect: **" + server.autoReconnect + "**");
+        bot.logger.send("autoConnect: **" + server.autoReconnect + "**");
     }
 }
 
-function serverInfo(_, server, _, _) {
-    server.getInfo();
+function serverInfo(bot, args, _) {
+    if (args.length <= 0) {
+        bot.server.getInfo();
+        return;
+    }
+    switch (args[0].toLowerCase()) {
+        case "pop":
+        case "players":
+            bot.server.getPlayerCount();
+            break;
+        default:
+            bot.server.getInfo();
+            break;
+    }
+
 }
 
-function playerCount(_, server, _, _) {
-    server.getPlayerCount();
+function connect(bot, _, _) {
+    bot.server.connect();
 }
 
-function connect(_, server, _, _) {
-    server.connect();
+function disconnect(bot, _, _) {
+    bot.server.disconnect();
 }
 
-function disconnect(_, server, _, _) {
-    server.disconnect();
-}
-
-function quit(client, server, logger, _) {
-    logger.send("Good night, dont let the offliners bite!");
+function quit(bot, _, _) {
+    bot.logger.send("Good night, dont let the offliners bite!");
     //await new Promise(r => setTimeout(r, 2000));
-    server.destroy();
-    client.destroy();
+    bot.server.destroy();
+    bot.client.destroy();
+    bot.steam = null;
+    bot.server = null;
+    bot.client = null;
+    bot.logger = null;
 }
 
-function git(_, _, logger, _) {
-    logger.send("This project was developed by Fishy#3400 for use by ICE. \nhttps://github1s.com/fishykins/icebot");
+function git(bot, _, _) {
+    bot.logger.send("This project was developed by Fishy#3400 for use by ICE. \nhttps://github1s.com/fishykins/icebot");
 }
 
 module.exports = {

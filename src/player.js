@@ -1,9 +1,11 @@
   
 class Player {
-    constructor(name, id, token) {
+    constructor(name, steamid, discordid) {
         this.name = name;
-        this.id = id;
-        this.token = token;
+        this.steamid = steamid;
+        this.discordid = discordid;
+        this.admin = false;
+        this.stats = [];
     }
 }
 

@@ -13,6 +13,7 @@
   "dependencies": {
     "@liamcottle/rustplus.js": "^2.0.0",
     "cleverbot-api-free": "^1.0.1",
-    "discord.js": "^12.5.3"
+    "discord.js": "^12.5.3",
+    "node-fetch": "^2.6.1"
   }
 }

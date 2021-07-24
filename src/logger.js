@@ -24,6 +24,13 @@ class Logger {
         if (this.discordChannel != null) {
             this.discordChannel.send(message);
         }
+    }
+
+    announce(message) {
+        console.log(message);
+        if (this.discordChannel != null) {
+            this.discordChannel.send(message);
+        }
         if (this.rustChat != null) {
             this.rustChat.sendTeamMessage("[BOT] " + message);
         }

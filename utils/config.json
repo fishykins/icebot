@@ -1,21 +1,21 @@
 {
   "fcm_credentials": {
     "keys": {
-      "privateKey": "c3FPhXmoU1WpH4a6kJrxN-h0EJLKw3xPQm946jbhKNo",
-      "publicKey": "BLRP5oQ0-CLvjcGZrgpTRaOskiA_vC7mZ18zk7op6UT92kV30XV_PyQpKYKofxAv0qtZYQky5Gsv_X2uoutziSg",
-      "authSecret": "09Bf5vqRXupiuXb1Pg3O0g"
+      "privateKey": "-QZFWeMsY8qLBqwF2QK_oGLsR_p_3sm3hTGzE-lp500",
+      "publicKey": "BCeum-yd4jH26OYSGtK_vH5HjjA0D01aDnnnqc5Fmx9jwJc1YonE6LNVOU486iqhuzSICZTl1bEN3kint_nHnvo",
+      "authSecret": "ZIm-RZtED3aYsfB13zYHDQ"
     },
     "fcm": {
-      "token": "eB-NXCofUTk:APA91bEW6xL6ttWGY3eqYCVbJC5MrwW9SsBCxgaCyg3AVHH2gGOE4JDjFsiefX0nhWy4y3akFc5wIwq4f3tvkJIA3BdayleLobIWYaadU3XWXrBTT36xGqYIXB8qtxdK7lNgMC6m6oyn",
-      "pushSet": "d17gPUAR1lU:APA91bEg7-MshzhbwqcB4gq2sGPw-TeC6Zu1hr8GzvJ-5atTTz9iDlybRgjNGiVJM1jfiqJrRYmtJug3D2rFUGfIzYJShVyXcjTDACa-HXAeHQkxpIFcoFw-dfYcK5eQXPMwqXjhmBI6"
+      "token": "cvhHN6ZXOZ0:APA91bFoucuIQBALMDTHZ070xR3iNsUJbLwqTb36ufLmdKh4YEfTzY-25tTOrW8H0_uMini0vbhHCErQ7_UPaXXfoT6J5UwPyYzju3932xLpkYA8ynuQpctbh_W8mxHMLunl5BVeBDj2",
+      "pushSet": "d3Xmp53PXEE:APA91bFFMGI2_vjDi-nkfkbkUZja8-k0W4N7eBeTJAybj2Hkt-q4vX-AT9HDYTDkc_Dd4le8BeJ513_b6eBa9SAXgyhwJOh1p6yGCPAoKIibjPa3WrXRaFn5qSjdqIIclRvNiV0hdA8t"
     },
     "gcm": {
-      "token": "fueuPsxRKtw:APA91bHGMpVVsM5srvTpCQoNjN9He0sQSCvUMrO2dtrxmFOU2b-KdUMhS-e67fhaR4epOaHRMGzBjg8aXLsmFVifrGHMak0JHPPQ1rYG-m6dQdWbGxNO2Pw635BDo0E_oRqP0-V9atAc",
-      "androidId": "4902914524976712893",
-      "securityToken": "1512936072486735623",
-      "appId": "wp:receiver.push.com#62cef32b-f88f-43cb-a0b3-9b4861e57f81"
+      "token": "cF8AWOeJL9I:APA91bE-VpFHViaRjtTqQSH-mnDCjjO3Py94jbi5lBtcHo8_7lIv9i1SXQeErC96mWdN-LNHUTOd7s5MswPUey5bGSfn3HyWC6AuyQwPNwToeL1anWr25tOg57w_rJx28crx7M1i4-PA",
+      "androidId": "5401259086474136031",
+      "securityToken": "8617231713693478077",
+      "appId": "wp:receiver.push.com#d6ab2a55-60b4-44df-a0ed-0473f5ff28e7"
     }
   },
-  "expo_push_token": "ExponentPushToken[y1QJ1_Chk6dim5vgVG6eUu]",
-  "rustplus_auth_token": "eyJzdGVhbUlkIjoiNzY1NjExOTgwMDY5MzIwMjIiLCJpc3MiOjE2MjU5NTY2NjYsImV4cCI6MTYyNzE2NjI2Nn0=.QjBhs3YUoj1A6ZUZwDh7pgpJ/WfizwmoIYm5lqIk2/LphynTFYpRFV3dX/VRWMEIuJU2IRd0LmSWYubFtOtcBg=="
+  "expo_push_token": "ExponentPushToken[gyKbEZNKiDSfWgYqjncw0a]",
+  "rustplus_auth_token": "eyJzdGVhbUlkIjoiNzY1NjExOTgwMDY5MzIwMjIiLCJpc3MiOjE2MjY5Njc3MjEsImV4cCI6MTYyODE3NzMyMX0=.FnHJgO14kN1Ck2ZGqWrRZ3fc15CTc2ZPVKpxXYTYuaH/qD/ebIU2UYEbZYeX2VqU2POhXu1qTO4geBppRbOBBQ=="
 }

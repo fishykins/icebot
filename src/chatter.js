@@ -1,7 +1,7 @@
 const homosexualNouns = ["gey", "gay", "homo", "bent"];
-const rudeAdjectives = ["smelly", "arsey", "poopy", "cunty", "twatty", "slimey", "cretinous", "annoying", "dirty", "sorded", "grumpy", "horrible", "repulsive", "ugly", "stupid"];
+const rudeAdjectives = ["bad", "smelly", "arsey", "poopy", "cunty", "twatty", "slimey", "cretinous", "annoying", "dirty", "sorded", "grumpy", "horrible", "repulsive", "ugly", "stupid"];
 const otherAdjectives = ["adorable", "bloody", "ashamed", "delightful", "glorious", "glamorous", "gleaming", "strange", "tender", "zealous"];
-const badNouns = ["arse", "snake", "bastard", "minge", "twat", "pepega", "poopface", "rat", "midget", "fuck", "cunt", "penis", "vagina", "booby", "butt", "goon", "froon", "goof"];
+const badNouns = ["arse", "bitch", "semen", "snake", "bastard", "minge", "twat", "pepega", "poopface", "rat", "midget", "fuck", "cunt", "penis", "vagina", "booby", "butt", "goon", "froon", "goof"];
 const miscNouns = ["badger", "bunny", "baloon", "bicycle", "face", "toe", "meat", "shirt", "tongue", "student", "girl", "boy", "paper", "hotel", "computer", "plane", "jellyfish", "crab", "lobster"];
 const verbs = ["lick", "creep", "ring", "touch", "fuck", "grease", "doorcamp", "roofcamp", "leach", "sniff", "whip", "squeeze", "stain", "prick", "peck", "suck"];
 const adjectives = rudeAdjectives.concat(otherAdjectives);
@@ -54,7 +54,7 @@ class Chatter {
     why(message) {
         if (check(message, ["not", "dont", "don't", "wont", "won't"]) && check(message, ["work"])) {
             this.appologise();
-        } else if (check(message, ["broken", "dead", "buggy"])) {
+        } else if (check(message, ["broken", "dead", "buggy", "bad"])) {
             this.appologise();
         } else if (check(message, homosexualNouns)) {
             const responses = ["I once had sex with your mother and that was enough.", "I'd rather be gay than have sex with you.", "It all started when I met your father...", "Because women repulse me", "Technically I orientate towards anything that isn't authed"];
