@@ -258,7 +258,6 @@ class IceBot {
         const arg0 = (args.length >= 1) ? args[0].toLowerCase() : null;
         const arg1 = (args.length >= 2) ? args[1] : null;
         const arg2 = (args.length >= 3) ? args[2] : null;
-        const arg3 = (args.length >= 4) ? args[3] : null;
 
         if (!arg0) {
             this.logger.sendBlock("*List* - list all devices\n*Add NAME DEVICE_ID*- adds a smart device\n*Remove NAME*- removes device from list\n*NAME on/off*- turns device on off. Leave blank for current status.", "Device Commands");
@@ -312,17 +311,16 @@ class IceBot {
                 }
                 break;
             default:
-                if (arg1) {
-                    const device = this.devices.find(x => x.name.toLowerCase() == arg1.toLowerCase())
-                    if (device && arg2) {
-                        const powered = stringToBool(arg2);
-                        this.server.setDevice(device, powered);
-                    } else if (device) {
-                        this.server.getDevice(device);
-                    } else {
-                        this.logger.error("No device found with that name");
-                    }
+                const device = this.devices.find(x => x.name.toLowerCase() == arg0.toLowerCase())
+                if (device && arg1) {
+                    const powered = stringToBool(arg1);
+                    this.server.setDevice(device, powered);
+                } else if (device) {
+                    this.server.getDevice(device);
+                } else {
+                    this.logger.error("No device found with that name");
                 }
+
                 break;
         }
     }
