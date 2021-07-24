@@ -112,7 +112,8 @@ class IceBot {
             return;
         }
 
-        if (this.steam.stats.includes(args[0].toLowerCase())) {
+        const statIndex = this.steam.stats.findIndex(x => x.name == args[0].toLowerCase());
+        if (statIndex >= 0) {
             this.buildLeaderboard(args[0].toLowerCase());
             return;
         }
@@ -167,7 +168,7 @@ class IceBot {
         const players = [...this.players];
         var mappedPlayers = players.map(player => {
             const statIndex = player.stats.findIndex(x => x.name == stat);
-            const value = (statIndex >= 0) ? player.stats[statIndex].value - player.stats[statIndex].wipeStart : 0;
+            const value = (statIndex >= 0) ? player.stats[statIndex].value - player.stats[statIndex].wipeValue : 0;
             return {
                 "name": player.name,
                 "value": value
