@@ -218,8 +218,8 @@ class IceBot {
                 }
 
                 const newPlayer = new Player(playerName, args[2], discordId);
-                players.push(newPlayer);
-                fs.writeFile(playerConfigFile, JSON.stringify(players), err => {
+                this.players.push(newPlayer);
+                fs.writeFile(playerConfigFile, JSON.stringify(this.players), err => {
                     if (err) {
                         this.logger.error("Failed to save player config to file!");
                     } else {
