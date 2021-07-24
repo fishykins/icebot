@@ -42,6 +42,7 @@ class IceBot {
         this.players.forEach(x => {
             this.steam.updatePlayerData(x);
         });
+        this.savePlayers();
     }
 
     initDiscord() {
@@ -128,6 +129,7 @@ class IceBot {
         }
         if (index >= 0) {
             const player = this.players[index];
+            await this.steam.updatePlayerData(player);
             if (player.stats.length > 0) {
                 this.logger.send(this.client.formatPlayerStats(player));
             } else {
@@ -152,8 +154,8 @@ class IceBot {
             if (p.stats.length > 0) {
                 this.logger.log("Wiping " + p.name + "...");
                 p.stats.forEach(s => {
-                    s.wipeStart = s.value;
-                    this.logger.log("    " + s.name + ".wipeStart = " + s.wipeStart);
+                    s.wipeValue = s.value;
+                    this.logger.log("    " + s.name + ".wipeValue = " + s.wipeValue);
                 });
             }
         });

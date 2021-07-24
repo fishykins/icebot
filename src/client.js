@@ -28,13 +28,27 @@ class Client {
             const channel = this.discord.channels.cache.get(this.channelId);
             if (!message.author.bot) {
                 if (message.channel == channel) {
-                    var args = message.content.split(" ");
-                    if (args[0].toLowerCase() == this.prefix && args.length >= 2) {
-                        this.logger.log("passing api call '" + message + "' to bot...");
-                        onMessage(args.slice(1), message.author);
+                    if (this.prefix.length > 1) {
+                        //Prefix is a long string
+                        var args = message.content.split(" ");
+                        if (args[0].toLowerCase() == this.prefix && args.length >= 2) {
+                            this.logger.log("passing api call '" + message + "' to bot...");
+                            onMessage(args.slice(1), message.author);
+                        } else {
+                            this.logger.log("passing message '" + message + "' to bot...");
+                            onMessageSpy(message.content);
+                        }
                     } else {
-                        this.logger.log("passing message '" + message + "' to bot...");
-                        onMessageSpy(message.content);
+                        //Prefix is a single char
+                        const firstChar = message.content.charAt(0);
+                        var args = message.content.slice(1).split(" ");
+                        if (firstChar.toLowerCase() == this.prefix && args.length >= 1) {
+                            this.logger.log("passing api call '" + message + "' to bot...");
+                            onMessage(args, message.author);
+                        } else {
+                            this.logger.log("passing message '" + message + "' to bot...");
+                            onMessageSpy(message.content);
+                        }
                     }
                 } else {
                     this.snooper.evaluateMessage(message);
@@ -71,7 +85,7 @@ class Client {
     embedAddStatType(player, embed, filter) {
         player.stats.forEach(stat => {
             if (stat.type.toLowerCase() == filter.toLowerCase()) {
-                const farmed = stat.value - stat.wipeStart;
+                const farmed = stat.value - stat.wipeValue;
                 embed.addField(stat.name, farmed, true);
             }
         });
