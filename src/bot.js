@@ -313,6 +313,9 @@ class IceBot {
                     });
                 }
                 break;
+            case "save":
+                this.saveDevices();
+                break;
             default:
                 const device = this.devices.find(x => x.name.toLowerCase() == arg0.toLowerCase())
                 if (device && arg1) {
